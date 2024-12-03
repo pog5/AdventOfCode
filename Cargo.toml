@@ -1,0 +1,9 @@
+[package]
+name = "aoc2024"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# day 1
+reformation = "0.5.3"
+sorted-vec = "0.8.5"
