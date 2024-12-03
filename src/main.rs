@@ -1,9 +1,11 @@
 use std::io::Write;
 use crate::day1::day1;
 use crate::day2::day2;
+use crate::day3::day3;
 
 mod day1;
 mod day2;
+mod day3;
 
 fn main() {
     print!("Day: ");
@@ -16,6 +18,7 @@ fn main() {
     match day {
         1 => day1(),
         2 => day2(),
+        3 => day3(),
         _ => println!("Day not implemented"),
     }
 }
