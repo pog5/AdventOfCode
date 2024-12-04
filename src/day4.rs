@@ -86,7 +86,66 @@ fn part1(input: &str) -> String {
 }
 
 fn part2(input: &str) -> String {
-    "TODO".to_string()
+    let mut multiline_captures: i128 = 0;
+    let _: Vec<_> = input
+        .lines()
+        .map_windows(|&[a, b, c]| {
+            eprintln!();
+            eprintln!("a: {}", a);
+            eprintln!("b: {}", b);
+            eprintln!("c: {}", c);
+            let mut i = 0;
+            while i < a.len() {
+                eprintln!("i: {}", i);
+
+                if i < a.len() - 2 {
+                    let multirow = format!(
+                        "{}{}{}",
+                        a.chars().nth(i).unwrap(),
+                        b.chars().nth(i + 1).unwrap(),
+                        c.chars().nth(i + 2).unwrap(),
+                    );
+
+                    if multirow == "MAS" {
+                        // eprintln!("normal caught");
+                    }
+                    if multirow == "SAM" {
+                        // eprintln!("backwards caught");
+                    }
+
+                    let first = multirow == "MAS" || multirow == "SAM";
+
+                    let multirow_backwards = format!(
+                        "{}{}{}",
+                        a.chars().nth(i + 2).unwrap(),
+                        b.chars().nth(i + 1).unwrap(),
+                        c.chars().nth(i).unwrap(),
+                    );
+                    if multirow_backwards == "MAS" {
+                        // eprintln!("flipped caught");
+                    }
+                    if multirow_backwards == "SAM" {
+                        // eprintln!("flipped backwards caught");
+                    }
+
+                    let second = multirow_backwards == "MAS" || multirow_backwards == "SAM";
+
+                    if first && second {
+                        multiline_captures += 1;
+                        // eprintln!("both");
+                    }
+                }
+
+                i += 1;
+            }
+            true
+        })
+        .collect();
+
+    let sum = multiline_captures;
+    eprintln!("total: {}", sum);
+
+    sum.to_string()
 }
 
 pub fn day4() {
