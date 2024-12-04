@@ -1,3 +1,5 @@
+#![feature(iter_map_windows)]
+
 use std::io::Write;
 use crate::day1::day1;
 use crate::day2::day2;
