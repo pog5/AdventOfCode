@@ -1,6 +1,90 @@
 fn part1(input: &str) -> String {
-    "TODO".to_string()
+    let oneline_captures: i128 = input
+        .as_bytes()
+        .windows(4)
+        .filter(|&w| w == b"XMAS" || w == b"SAMX")
+        .count() as i128;
+
+    eprintln!("one-line caps: {}", oneline_captures);
+
+    let mut multiline_captures: i128 = 0;
+    let _: Vec<_> = input
+        .lines()
+        .map_windows(|&[a, b, c, d]| {
+            eprintln!();
+            eprintln!("a: {}", a);
+            eprintln!("b: {}", b);
+            eprintln!("c: {}", c);
+            eprintln!("d: {}", d);
+            let mut i = 0;
+            while i < a.len() {
+                eprintln!("i: {}", i);
+                let singlerow = format!(
+                    "{}{}{}{}",
+                    a.chars().nth(i).unwrap(),
+                    b.chars().nth(i).unwrap(),
+                    c.chars().nth(i).unwrap(),
+                    d.chars().nth(i).unwrap()
+                );
+                if singlerow == "XMAS" {
+                    multiline_captures += 1;
+                    eprintln!("singlerow caught");
+                }
+                if singlerow == "SAMX" {
+                    multiline_captures += 1;
+                    eprintln!("singlerow_rev caught");
+                }
+
+                if i > 2 {
+                    let multirow_backwards = format!(
+                        "{}{}{}{}",
+                        a.chars().nth(i).unwrap(),
+                        b.chars().nth(i - 1).unwrap(),
+                        c.chars().nth(i - 2).unwrap(),
+                        d.chars().nth(i - 3).unwrap()
+                    );
+                    if multirow_backwards == "XMAS" {
+                        multiline_captures += 1;
+                        eprintln!("multirow_backwards caught");
+                    }
+                    if multirow_backwards == "SAMX" {
+                        multiline_captures += 1;
+                        eprintln!("multirow_backwards_rev caught");
+                    }
+                }
+
+                if i < a.len() - 3 {
+                    let multirow = format!(
+                        "{}{}{}{}",
+                        a.chars().nth(i).unwrap(),
+                        b.chars().nth(i + 1).unwrap(),
+                        c.chars().nth(i + 2).unwrap(),
+                        d.chars().nth(i + 3).unwrap()
+                    );
+
+                    if multirow == "XMAS" {
+                        multiline_captures += 1;
+                        eprintln!("multirow caught");
+                    }
+                    if multirow == "SAMX" {
+                        multiline_captures += 1;
+                        eprintln!("multirow_rev caught");
+                    }
+                }
+                i += 1;
+            }
+            true
+        })
+        .collect();
+
+    eprintln!("multi-line caps: {}", multiline_captures);
+
+    let sum = oneline_captures + multiline_captures;
+    eprintln!("total: {}", sum);
+
+    sum.to_string()
 }
+
 fn part2(input: &str) -> String {
     "TODO".to_string()
 }
