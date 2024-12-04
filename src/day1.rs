@@ -52,7 +52,7 @@ fn part2(input: &str) -> String {
 
     for first in first_list {
         for second in &*second_list {
-            if (first != *second)  {
+            if first != *second  {
                 continue;
             }
 

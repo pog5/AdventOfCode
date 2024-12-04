@@ -44,9 +44,9 @@ fn is_safe_p2(line: &str, is_recursing: bool) -> bool {
         nums.push(parsed);
     };
 
-    let mut failedOrder = false;
+    let mut failed_order = false;
     if !(nums.windows(2).all(|w| w[0] < w[1]) || nums.windows(2).all(|w| w[0] > w[1])) {
-        failedOrder = true;
+        failed_order = true;
     }
 
     let normal = nums.windows(2).all(|w| {
@@ -59,10 +59,10 @@ fn is_safe_p2(line: &str, is_recursing: bool) -> bool {
         diff >= 1 && diff <= 3
     });
 
-    if (normal && !failedOrder) {
+    if normal && !failed_order {
         true
     } else {
-        if (!is_recursing) {
+        if !is_recursing {
             let mut ournums = Vec::new();
             for num in line.split(" ") {
                 let parsed: i128 = num.parse().unwrap();
