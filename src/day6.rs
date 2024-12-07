@@ -27,6 +27,11 @@ impl Guard {
     }
 
     fn peek(&self) -> Coordinate {
+        if self.coordinate.x == 0 {
+            return Coordinate { x: 0, y: self.coordinate.y };
+        } else if self.coordinate.y == 0 {
+            return Coordinate { x: self.coordinate.x, y: 0 };
+        }
         match self.facing {
             Facing::Up => Coordinate { x: self.coordinate.x - 1, y: self.coordinate.y },
             Facing::Down => Coordinate { x: self.coordinate.x + 1, y: self.coordinate.y },
@@ -36,6 +41,13 @@ impl Guard {
     }
 
     fn move_forward(&mut self) {
+        if self.coordinate.x == 0 {
+            self.coordinate.x = 0;
+            return;
+        } else if self.coordinate.y == 0 {
+            self.coordinate.y = 0;
+            return;
+        }
         match self.facing {
             Facing::Up => self.coordinate.x -= 1,
             Facing::Down => self.coordinate.x += 1,
@@ -207,17 +219,24 @@ fn part1(input: &str) -> String {
     let mut distinct_tiles = Vec::new();
     distinct_tiles.push(grid.get_guard().coordinate.clone());
 
+    let mut last_coords = Coordinate { x: 0, y: 0 };
+    let mut iterations_spent_on_same_coords = 0;
     while grid.is_guard_in_bounds() {
-        // The code WILL panic if the guard goes out of bounds
-        // regardless, the last outputted value is correct.
         grid.tick();
 
         if !distinct_tiles.contains(&grid.get_guard().coordinate) {
             distinct_tiles.push(grid.get_guard().coordinate.clone());
         }
 
-        eprintln!("{:?}", grid.get_guard().coordinate);
-        eprintln!("{}", distinct_tiles.len());
+        // Hacky solution, but prevents the panic
+        let new_last_coords = grid.get_guard().coordinate.clone();
+        if new_last_coords == last_coords {
+            iterations_spent_on_same_coords += 1;
+        }
+        last_coords = new_last_coords;
+        if iterations_spent_on_same_coords > grid.width * grid.height {
+            break;
+        }
     }
 
     distinct_tiles.len().to_string()
