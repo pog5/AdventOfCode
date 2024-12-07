@@ -60,12 +60,19 @@ struct Grid {
 }
 
 fn is_guard_inside(guard: &Guard, grid: &Grid) -> bool {
-    let above_zero = !(guard.facing == Facing::Up && guard.x <= 0 ||
-        guard.facing == Facing::Left && guard.y <= 0 ||
-        guard.facing == Facing::Down && guard.x >= grid.height ||
-        guard.facing == Facing::Right && guard.y >= grid.width);
+    let inside_bounds = guard.x < grid.width && guard.y < grid.height;
+    let above_zero = if
+        (guard.facing == Facing::Up && guard.x <= 0) ||
+        (guard.facing == Facing::Left && guard.y <= 0) ||
+        (guard.facing == Facing::Down && guard.x >= grid.height) ||
+        (guard.facing == Facing::Right && guard.y >= grid.width)
+    {
+        false
+    } else {
+        true
+    };
 
-    guard.x < grid.width && guard.y < grid.height && above_zero
+    inside_bounds && above_zero
 }
 
 fn part1_internal(input: &str) -> HashSet<(usize, usize)> {
